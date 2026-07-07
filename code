@@ -1,0 +1,51 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class SalesDataParser {
+
+    public static void main(String[] args) {
+
+        String csvFile = "sales_data.csv";
+        String line;
+        String splitBy = ",";
+
+        double totalSales = 0;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+
+            // Skip Header
+            br.readLine();
+
+            System.out.println("Sales Records:");
+            System.out.println("--------------------------------------------");
+
+            while ((line = br.readLine()) != null) {
+
+                String[] data = line.split(splitBy);
+
+                int id = Integer.parseInt(data[0]);
+                String product = data[1];
+                int quantity = Integer.parseInt(data[2]);
+                double price = Double.parseDouble(data[3]);
+
+                double amount = quantity * price;
+                totalSales += amount;
+
+                System.out.println("ID: " + id);
+                System.out.println("Product: " + product);
+                System.out.println("Quantity: " + quantity);
+                System.out.println("Price: " + price);
+                System.out.println("Amount: " + amount);
+                System.out.println("--------------------------------------------");
+            }
+
+            System.out.println("Total Sales = " + totalSales);
+
+        } catch (IOException e) {
+            System.out.println("File Error: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid Data Found!");
+        }
+    }
+}
